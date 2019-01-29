@@ -40,9 +40,10 @@ group jupyter {
 }
 EOF
     sudo /etc/init.d/cgconfig restart
+    yum install cyrus-sasl-devel
 fi
 
-echo Installing up Python dependencies. 
+echo Installing Python dependencies. 
 (
     # Check for venv. 
     if which python3 | grep -q /usr/bin; then 
