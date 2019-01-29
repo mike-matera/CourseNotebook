@@ -1,0 +1,15 @@
+
+.rendered_html table {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.rendered_html td {
+  text-align: left;
+  vertical-align: top;
+}
+
+.rendered_html th {
+  text-align: center;
+  vertical-align: top;
+}

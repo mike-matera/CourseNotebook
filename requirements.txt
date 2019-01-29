@@ -1,0 +1,26 @@
+jupyter
+flask
+bash_kernel
+numpy
+pandas
+toyplot
+requests
+calysto
+ipywidgets
+matplotlib
+scipy
+sqlalchemy
+ipython-sql
+
+# These have compiled modules that require SASL dev package
+pyhive[hive]
+pyhive[presto]
+pyhive[mysql]
+pyhive[postgres]
+pyhive[sqlite]
+psycopg2-binary
+
+seaborn
+
+mysql-connector
+mysqlclient

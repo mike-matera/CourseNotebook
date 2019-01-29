@@ -1,0 +1,51 @@
+#! /usr/bin/env python3
+
+import sys 
+import re
+import os 
+import subprocess
+import pathlib 
+
+setup_dir = pathlib.Path(sys.argv[0]).absolute().parent.parent
+
+# Construct the preview URL...
+if 'C9_PID' in os.environ:
+    instance_name = os.environ['C9_PID']
+
+    result = subprocess.run("curl http://169.254.169.254/latest/meta-data/placement/availability-zone", \
+                        shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, encoding='UTF-8') 
+    result = result.stdout 
+
+    m = re.match(r'(\S+-\S+-\d+)', result)
+    if m is None: 
+        raise ValueError("Couldn't parse the availability-zone: " + result)
+
+    instance_zone = m.group(1)
+    instance_url = f'https://{instance_name}.vfs.cloud9.{instance_zone}.amazonaws.com:8081'
+    executable = 'cgexec'
+    add_args = ['cgexec', '-g', 'memory:jupyter', 'jupyter']
+else:
+    instance_url = f'http://127.0.1.1:8081/'
+    executable = 'jupyter'
+    add_args = ['jupyter']
+    
+os.environ['JUPYTER_CONFIG_DIR'] = f'{setup_dir}/config'
+os.environ['PYTHONPATH'] += f':{setup_dir}'
+
+os.execvp(executable, add_args + [ 
+        'notebook', 
+        '--no-browser',
+        '--port=8081', 
+        f'--NotebookApp.custom_display_url={instance_url}',
+        f'--NotebookApp.default_url=/notebooks/welcome.ipynb',
+        f'--NotebookApp.allow_remote_access=True',
+        f'--notebook-dir={setup_dir}/environment',
+        f'{setup_dir}/environment/welcome.ipynb',
+        f'--KernelManager.autorestart=False',
+        f'--MappingKernelManager.buffer_offline_messages=False',
+        f'--MappingKernelManager.cull_busy=True',
+        f'--MappingKernelManager.cull_connected=False',
+        f'--MappingKernelManager.cull_idle_timeout=60',
+        f'--MappingKernelManager.cull_interval=30',
+        ]
+    )

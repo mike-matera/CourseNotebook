@@ -1,0 +1,42 @@
+#! /usr/bin/env python3
+
+"""
+Clean the output fields of all the workbooks. Useful before checkin so that 
+run artifacts are not considered part of the source.
+"""
+
+import sys
+import io
+import os
+import json 
+import pathlib 
+
+if sys.version_info[0] != 3 or sys.version_info[1] < 6:
+    raise Exception("Python 3.6 or a more recent version is required.")
+
+setup_dir = pathlib.Path(sys.argv[0]).absolute().parent.parent
+workbook_dir = setup_dir # / "jupyter-notebooks"
+
+def clean_workbook(filename):
+    with open(filename) as f: 
+        book = json.loads(f.read())
+    
+    modified = False
+    for cell in book.get('cells', []) :
+        if 'outputs' in cell and len(cell['outputs']) > 0:
+            cell['outputs'] = []
+            modified = True
+
+    if modified: 
+        print ("Writing cleaned", filename)
+        with open(filename, 'w') as f: 
+            f.write(json.dumps(book, indent=1, sort_keys=True))
+            f.write('\n')
+
+def main():
+    for workbook in workbook_dir.glob('**/*.ipynb'):
+        if '.ipynb_checkpoints' not in str(workbook):
+            clean_workbook(workbook)
+
+if __name__ == '__main__':
+    main()

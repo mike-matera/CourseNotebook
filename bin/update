@@ -1,0 +1,56 @@
+#! /bin/bash 
+
+set -e 
+
+if [ -L "$0" ]; then 
+    export setup_dir=$(realpath "$(dirname $(readlink $0))/../")
+else
+    export setup_dir=$(realpath "$(dirname $0)/../")
+fi
+
+if uname -a | grep amzn; then 
+    echo "Configuring cgroups."
+    sudo tee /etc/cgconfig.conf <<EOF >/dev/null 2>&1
+mount {
+    blkio      = /cgroup/blkio;
+    cpu        = /cgroup/cpu;
+    cpuacct    = /cgroup/cpuacct;
+    cpuset     = /cgroup/cpuset;
+    devices    = /cgroup/devices;
+    freezer    = /cgroup/freezer;
+    hugetlb    = /cgroup/hugetlb;
+    memory     = /cgroup/memory;
+    perf_event = /cgroup/perf_event;
+}
+
+group jupyter {
+
+    perm {
+        admin {
+            uid = ec2-user;
+        }
+        task {
+            uid = ec2-user;
+        }
+    }
+
+    memory {
+        memory.limit_in_bytes = 200000000;
+    }
+}
+EOF
+    sudo /etc/init.d/cgconfig restart
+fi
+
+echo Installing up Python dependencies. 
+(
+    # Check for venv. 
+    if which python3 | grep -q /usr/bin; then 
+        userdir="--user"
+    else
+        echo "venv detected."
+        userdir=""
+    fi
+    python3 -m pip install $userdir --upgrade pip 
+    python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
+) 
