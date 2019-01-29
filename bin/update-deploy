@@ -55,3 +55,15 @@ echo Installing Python dependencies.
     python3 -m pip install $userdir --upgrade pip 
     python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
 ) 
+
+echo "Installing course notebooks"
+(
+  cd ~/environment
+  if [ -f "$HOME/.course" ]; then 
+    course=$(head -1 "$HOME/.course")
+    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf -  --keep-newer-files
+  else
+    echo No course selected
+  fi
+) > /dev/null
+
