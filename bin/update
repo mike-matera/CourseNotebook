@@ -40,7 +40,7 @@ group jupyter {
 }
 EOF
     sudo /etc/init.d/cgconfig restart
-    yum install cyrus-sasl-devel
+    sudo yum install cyrus-sasl-devel
 fi
 
 echo Installing Python dependencies. 
