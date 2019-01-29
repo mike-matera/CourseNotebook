@@ -1,4 +1,17 @@
 #! /bin/bash 
 
-cd ~ && wget -q -O - https://github.com/mike-matera/CourseNotebook/archive/master.tar.gz | tar -zxvf - --strip-components=1 
+set -e 
+cd ~
+wget -q -O - https://github.com/mike-matera/CourseNotebook/archive/master.tar.gz | tar -zxvf - --strip-components=1
 ~/bin/update-deploy
+
+(
+  cd ~/environment
+  if [ -f "$HOME/.course" ]; then 
+    course=$(head -1 "$HOME/.course")
+    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf - 
+  else
+    echo No course selected
+  fi
+)
+
