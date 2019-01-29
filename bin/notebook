@@ -30,7 +30,7 @@ else:
     add_args = ['jupyter']
     
 os.environ['JUPYTER_CONFIG_DIR'] = f'{setup_dir}/config'
-os.environ['PYTHONPATH'] += f':{setup_dir}'
+os.environ['PYTHONPATH'] = os.environ.get('PYTHONPATH', "") + f':{setup_dir}'
 
 os.execvp(executable, add_args + [ 
         'notebook', 
