@@ -1,6 +1,0 @@
-#! /bin/bash 
-
-setup_dir=$(realpath $(dirname $0)/..)
-env_dir=$setup_dir/environment
-
-cd $env_dir && wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/cis-15/content.tar.gz | tar -zxvf - --strip-components=1 

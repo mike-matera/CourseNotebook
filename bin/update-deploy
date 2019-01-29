@@ -58,12 +58,12 @@ echo Installing Python dependencies.
 
 echo "Installing course notebooks"
 (
-  cd ~/environment
-  if [ -f "$HOME/.course" ]; then 
-    course=$(head -1 "$HOME/.course")
-    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf -  --keep-newer-files
+  cd $setup_dir/environment
+  if [ -f "$setup_dir/.course" ]; then 
+    course=$(head -1 "$setup_dir/.course")
+    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf - --keep-newer-files
   else
-    echo No course selected
+    echo No course selected 
   fi
-) > /dev/null
+) 
 
