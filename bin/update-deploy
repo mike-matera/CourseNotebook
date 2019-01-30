@@ -2,11 +2,7 @@
 
 set -e 
 
-if [ -L "$0" ]; then 
-    export setup_dir=$(realpath "$(dirname $(readlink $0))/../")
-else
-    export setup_dir=$(realpath "$(dirname $0)/../")
-fi
+export setup_dir=$(realpath "$(dirname $0)/../")
 
 if uname -a | grep amzn; then 
     echo "Configuring cgroups."
@@ -61,7 +57,7 @@ echo "Installing course notebooks"
   cd $setup_dir/environment
   if [ -f "$setup_dir/.course" ]; then 
     course=$(head -1 "$setup_dir/.course")
-    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf - --keep-newer-files
+    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf - --keep-newer-files > /dev/null 2>&1
   else
     echo No course selected 
   fi
