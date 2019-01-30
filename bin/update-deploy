@@ -54,12 +54,15 @@ echo Installing Python dependencies.
 
 echo "Installing course notebooks"
 (
-  cd $setup_dir/environment
+  if [ ! -f "$setup_dir/environment" ]; then 
+    mkdir -p "$setup_dir/environment"
+  fi 
+  cd "$setup_dir/environment"
   if [ -f "$setup_dir/.course" ]; then 
-    course=$(head -1 "$setup_dir/.course")
-    wget -q -O - https://s3-us-west-2.amazonaws.com/notebooks-course-content/$course/content.tar.gz | tar -zxvf - --keep-newer-files > /dev/null 2>&1
+    course_tarball=$(head -1 "$setup_dir/.course")
+    wget -q -O - $course_tarball | tar -zxvf - --keep-newer-files > /dev/null 2>&1
   else
     echo No course selected 
   fi
-) 
+)
 
