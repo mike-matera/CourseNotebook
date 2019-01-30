@@ -58,11 +58,13 @@ echo "Installing course notebooks"
     mkdir -p "$setup_dir/environment"
   fi 
   cd "$setup_dir/environment"
-  if [ -f "$setup_dir/.course" ]; then 
-    course_tarball=$(head -1 "$setup_dir/.course")
-    wget -q -O - $course_tarball | tar -zxvf - --keep-newer-files > /dev/null 2>&1
-  else
-    echo No course selected 
-  fi
+  if [ ! -e .git ]; then 
+    if [ -f "$setup_dir/.course" ]; then 
+      course_tarball=$(head -1 "$setup_dir/.course")
+      wget -q -O - $course_tarball | tar -zxvf - --keep-newer-files > /dev/null 2>&1
+    else
+      echo No course selected 
+    fi
+  fi 
 )
 
