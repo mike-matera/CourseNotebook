@@ -4,8 +4,12 @@ set -e
 
 export setup_dir=$(realpath "$(dirname $0)/../")
 
+
 if [ ! -d "$setup_dir/.git" ]; then 
-  wget -q -O - https://github.com/mike-matera/CourseNotebook/archive/master.tar.gz | tar -zxvf - --strip-components=1
+  (
+      cd $setup_dir
+      wget -q -O - https://github.com/mike-matera/CourseNotebook/archive/master.tar.gz | tar -zxvf - --strip-components=1
+  ) 
 fi 
 
 ./bin/update-deploy
