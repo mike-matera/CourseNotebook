@@ -12,4 +12,4 @@ if [ ! -d "$setup_dir/.git" ]; then
   ) 
 fi 
 
-./bin/update-deploy
+$setup_dir/bin/update-deploy
