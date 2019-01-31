@@ -6,6 +6,7 @@ pandas
 toyplot
 requests
 calysto
+widgetsnbextension
 ipywidgets
 matplotlib
 scipy

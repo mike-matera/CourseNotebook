@@ -50,6 +50,10 @@ echo Installing Python dependencies.
     fi
     python3 -m pip install $userdir --upgrade pip 
     python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
+
+    # Fix for: https://github.com/jupyter-widgets/ipywidgets/issues/1721
+    sudo jupyter nbextension install --py widgetsnbextension --sys-prefix
+    jupyter nbextension enable --py widgetsnbextension --user
 ) 
 
 echo "Installing course notebooks"
