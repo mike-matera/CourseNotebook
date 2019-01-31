@@ -60,11 +60,12 @@ echo Installing Python dependencies.
     $do_sudo python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
 
     hash -r 
+    jupyter=$(which jupyter)
     # https://github.com/matplotlib/basemap/archive/v1.2.0rel.tar.gz
 
     # Fix for: https://github.com/jupyter-widgets/ipywidgets/issues/1721
     # jupyter nbextension install --py widgetsnbextension --user
-    $do_sudo jupyter nbextension enable widgetsnbextension --py
+    $do_sudo $jupyter nbextension enable widgetsnbextension --py
 ) 
 
 echo "Installing course notebooks"
