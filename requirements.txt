@@ -24,3 +24,8 @@ seaborn
 
 mysql-connector
 mysqlclient
+
+geos
+proj
+pillow
+https://github.com/matplotlib/basemap/archive/v1.2.0rel.tar.gz

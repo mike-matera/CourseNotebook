@@ -36,7 +36,7 @@ group jupyter {
 }
 EOF
     sudo /etc/init.d/cgconfig restart
-    sudo yum -y install cyrus-sasl-devel mysql57-devel
+    sudo yum -y install cyrus-sasl-devel mysql57-devel geos-devel cairo
 fi
 
 echo Installing Python dependencies. 
