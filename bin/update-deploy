@@ -61,11 +61,15 @@ echo Installing Python dependencies.
 
     hash -r 
     jupyter=$(which jupyter)
-    # https://github.com/matplotlib/basemap/archive/v1.2.0rel.tar.gz
 
     # Fix for: https://github.com/jupyter-widgets/ipywidgets/issues/1721
     # jupyter nbextension install --py widgetsnbextension --user
     $do_sudo $jupyter nbextension enable widgetsnbextension --py
+
+    if ! python3 -c "import mpl_toolkits.basemap" 2> /dev/null; then 
+        $do_sudo python3 -m pip install https://github.com/matplotlib/basemap/archive/v1.2.0rel.tar.gz
+    fi
+
 ) 
 
 echo "Installing course notebooks"
