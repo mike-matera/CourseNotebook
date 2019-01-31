@@ -43,19 +43,27 @@ echo Installing Python dependencies.
 (
     # Check for venv. 
     if which python3 | grep -q /usr/bin; then 
-        userdir="--user"
+        if uname -a | grep amzn; then 
+            # Install as root on Amazon because widgets is fucking broken.
+            do_sudo="sudo"
+            userdir=""
+        else
+            do_sudo=""
+            userdir="--user"
+        fi
     else
         echo "venv detected."
+        do_sudo=""
         userdir=""
     fi
-    python3 -m pip install $userdir --upgrade pip 
-    python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
+    $do_sudo python3 -m pip install $userdir --upgrade pip 
+    $do_sudo python3 -m pip install $userdir --upgrade -r "$setup_dir/requirements.txt"
 
     # https://github.com/matplotlib/basemap/archive/v1.2.0rel.tar.gz
 
     # Fix for: https://github.com/jupyter-widgets/ipywidgets/issues/1721
     # jupyter nbextension install --py widgetsnbextension --user
-    jupyter nbextension enable widgetsnbextension --user --py
+    $do_sudo jupyter nbextension enable widgetsnbextension --py
 ) 
 
 echo "Installing course notebooks"
