@@ -31,7 +31,7 @@ group jupyter {
     }
 
     memory {
-        memory.limit_in_bytes = 200000000;
+        memory.limit_in_bytes = 400000000;
     }
 }
 EOF
