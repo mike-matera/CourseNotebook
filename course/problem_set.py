@@ -15,7 +15,11 @@ from IPython.display import HTML, Markdown, display
 import sqlite3
 import pandas as pd
 
-def load(url):
+def load_file(filename):
+    global mod 
+    mod = loader.load(filename)
+
+def load_url(url):
     global mod 
     with urllib.request.urlopen(url) as response:
         with tempfile.NamedTemporaryFile(delete=False, suffix='.py') as tmp_file:
